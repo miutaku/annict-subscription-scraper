@@ -6,7 +6,7 @@ RUN go build -o annict-subscription-scraper
 # Create an image
 FROM alpine:latest
 WORKDIR /root/
-COPY --from=builder /app/speedtest-exporter .
+COPY --from=builder /app/annict-subscription-scraper .
 EXPOSE 8080
 
 CMD ["./annict-subscription-scraper"]
