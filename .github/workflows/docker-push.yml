@@ -26,7 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.actor }}/annict-subscriotion-scraper
+          images: ghcr.io/${{ github.actor }}/annict-subscription-scraper
           tags: |
             type=raw,value=latest
             type=sha,prefix=,suffix=,format=short
