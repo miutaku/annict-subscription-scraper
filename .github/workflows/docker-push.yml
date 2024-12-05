@@ -1,13 +1,12 @@
 ---
-name: docker build
+name: docker push
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build:
+
+  push:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -27,7 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.actor }}/annict-subscription-scraper
+          images: ghcr.io/${{ github.actor }}/annict-subscriotion-scraper
           tags: |
             type=raw,value=latest
             type=sha,prefix=,suffix=,format=short
@@ -38,12 +37,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Push container image as latest
-        uses: docker/build-push-action@v5
-        with:
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: latest
+          platforms: linux/amd64,linux/arm64
