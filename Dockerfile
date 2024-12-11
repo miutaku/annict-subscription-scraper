@@ -9,4 +9,4 @@ WORKDIR /root/
 COPY --from=builder /app/annict-subscription-scraper .
 EXPOSE 8080
 
-CMD ["/root/annict-subscription-scraper"]
+CMD ["/app/annict-subscription-scraper"]
