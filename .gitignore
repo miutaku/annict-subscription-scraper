@@ -21,6 +21,9 @@
 go.work
 go.work.sum
 
+# Local tool caches
+.cache/
+
 # env file
 .env
 
