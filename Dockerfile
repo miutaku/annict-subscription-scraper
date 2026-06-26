@@ -1,13 +1,18 @@
-# Build stage
-FROM golang:1.23 AS builder
-WORKDIR /app
-COPY . .
-RUN go build -o annict-subscription-scraper ./main.go
+# syntax=docker/dockerfile:1
 
-# Runtime stage
-FROM alpine:latest
-WORKDIR /root/
-COPY --from=builder /app/annict-subscription-scraper .
-RUN apk add --no-cache libc6-compat
+FROM golang:1.26-alpine AS builder
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/annict-subscription-scraper .
+
+FROM alpine:3.22
+RUN apk add --no-cache ca-certificates \
+    && addgroup -S app \
+    && adduser -S -G app app
+WORKDIR /app
+COPY --from=builder /out/annict-subscription-scraper .
+USER app
 EXPOSE 8080
-CMD ["/root/annict-subscription-scraper"]
+CMD ["/app/annict-subscription-scraper"]
